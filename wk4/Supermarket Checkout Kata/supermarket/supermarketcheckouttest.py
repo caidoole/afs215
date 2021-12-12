@@ -12,23 +12,27 @@ def checkout():
 
 
 def test_add_item(checkout):
-    checkout.add_item("Dog Food")
+    assert checkout.add_item("Dog Food") == 1
+    assert checkout.add_item("Dog Food") == 2
 
 
 def test_add_multiple_items(checkout):
-    checkout.add_item("Dog Food")
-    assert checkout.calculate_current_total() == 10
-    checkout.add_item("Pickles")
-    assert checkout.calculate_current_total() == 12.50
-    checkout.add_item("Milk")
-    assert checkout.calculate_current_total() == 16.00
+    assert checkout.add_item("Dog Food") == 1
+    assert checkout.add_item("Dog Food") == 2
+    assert checkout.calculate_current_total() == 20
+    assert checkout.add_item("Pickles") == 1
+    assert checkout.calculate_current_total() == 22.50
+    assert checkout.add_item("Milk") == 1
+    assert checkout.calculate_current_total() == 26.00
 
 
 def test_add_discount(checkout):
-    checkout.add_item("Dog Food")
-    assert checkout.calculate_current_total() == 10
-    checkout.add_discount("Dog Food", 3)
-    assert checkout.calculate_current_total() == 7
+    assert checkout.add_item("Dog Food") == 1
+    assert checkout.add_item("Dog Food") == 2
+    assert checkout.add_item("Dog Food") == 3
+    assert checkout.calculate_current_total() == 30.00
+    assert checkout.add_discount("Dog Food", 10.00, 3) == 10.00
+    assert checkout.calculate_current_total() == 20.00
 
 
 def test_missing_price_exception(checkout):

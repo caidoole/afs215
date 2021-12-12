@@ -4,10 +4,15 @@ class CheckOut:
         self.items = {}
         self.item_prices = {}
         self.discount = {}
+        self.discountRules = {}
 
     def add_item(self, item):
         if item in self.item_prices:
-            self.items[item] = item
+            if item in self.items:
+                self.items[item] += 1
+            else:
+                self.items[item] = 1
+            return self.items[item]
         else:
             raise Exception("Item not in inventory")
 
@@ -17,10 +22,13 @@ class CheckOut:
     def calculate_current_total(self):
         current_total = 0
         for item, number in self.items.items():
-            current_total += self.item_prices[item]
+            current_total += (self.item_prices[item] * self.items[item])
             if item in self.discount:
-                current_total -= self.discount[item]
+                if self.items[item] >= self.discountRules[item]:
+                    current_total -= self.discount[item]
         return current_total
 
-    def add_discount(self, item, discount):
+    def add_discount(self, item, discount, number):
+        self.discountRules[item] = number
         self.discount[item] = discount
+        return self.discount[item]
